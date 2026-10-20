@@ -61,6 +61,23 @@
       animation: pulse-ring 1.8s infinite;
     }
 
+    @keyframes svg-dash-flow {
+      to {
+        stroke-dashoffset: -48;
+      }
+    }
+    .svg-flow-active {
+      stroke-dasharray: 8 6;
+      animation: svg-dash-flow 1.1s linear infinite;
+    }
+    @keyframes svg-node-glow {
+      0%, 100% { filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.6)); }
+      50% { filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.95)); }
+    }
+    .svg-node-active {
+      animation: svg-node-glow 1.8s ease-in-out infinite;
+    }
+
     .glass-card {
       background: rgba(15, 23, 42, 0.78);
       backdrop-filter: blur(14px);
@@ -522,6 +539,16 @@
             <span class="hidden md:inline">先修知識庫</span>
           </button>
 
+          <!-- 快速跳轉：互動視覺化閉環圖 -->
+          <button
+            onclick="openVisualLoopModuleDirectly()"
+            class="px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition flex items-center gap-1.5"
+            title="直接體驗 AI Agent 感知—思考—行動 互動視覺化流程圖"
+          >
+            <i class="fa-solid fa-diagram-project"></i>
+            <span class="hidden md:inline">互動閉環圖解</span>
+          </button>
+
           <!-- 關於 TONY 顧問按鈕 -->
           <button
             onclick="openCreatorModal()"
@@ -852,13 +879,13 @@
             </div>
           </div>
 
-          <!-- ==================== [MODULE 3] ReAct 狀態反思迴圈互動模擬器 ==================== -->
+          <!-- ==================== [MODULE 3] 互動視覺化：體驗 AI Agent 的「感知—思考—行動」循環 ==================== -->
           <div id="academyModContent-3" class="hidden glass-card rounded-2xl p-5 sm:p-6 border border-indigo-500/30 shadow-xl space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-4">
               <div>
-                <span class="text-xs font-mono uppercase px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Module 03 / ReAct Loop Simulator</span>
+                <span class="text-xs font-mono uppercase px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Module 03 / Interactive ReAct Closed-Loop Diagram</span>
                 <h2 class="text-lg sm:text-xl font-extrabold text-white mt-1">
-                  ReAct 狀態反思迴圈（Reason + Act）：為什麼 Agent 不會將錯就錯？
+                  互動視覺化：體驗 AI Agent 的「感知—思考—行動」循環
                 </h2>
               </div>
               <button onclick="markModuleComplete(3, 4)" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5">
@@ -867,38 +894,232 @@
             </div>
 
             <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              <strong>ReAct 框架</strong>（由 Yao et al. 提出）是現代 AI Agent 最核心的運作機制。它讓模型交替進行<strong>「Reasoning（邏輯推理產生 Thought）」</strong>與<strong>「Acting（呼叫外部工具 Action）」</strong>，並根據工具回傳的<strong>「Observation（環境觀察結果）」</strong>決定要繼續修正參數還是產出最終報告。請點擊下方<strong>「下一步」</strong>體驗完整 5 階段閉環：
+              為了讓這套運作邏輯更直觀，您可以透過下方的互動流程圖，逐步點擊切換（上一步／下一步），觀察 AI Agent 接收到商業任務後，如何在內部完成「感知、規劃、調用工具、反思與輸出」的動態閉環：
             </p>
 
-            <!-- 步進模擬器控制器 -->
-            <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <div class="text-xs font-bold text-amber-300">
-                  <i class="fa-solid fa-play-circle mr-1"></i> 互動式 ReAct 觀念步進拆解器
+            <!-- 頂部控制列：3 大商業情境切換器 ＋ 步進與自動播放控制 -->
+            <div class="p-4 rounded-2xl bg-slate-900/95 border border-slate-800 space-y-4">
+              <div class="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                <!-- 情境切換器 -->
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-xs font-bold text-slate-400 mr-1"><i class="fa-solid fa-Sliders mr-1 text-indigo-400"></i>切換演練任務情境：</span>
+                  <button
+                    id="vizScenBtn-brand"
+                    onclick="selectVizScenario('brand')"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-indigo-600 text-white border-indigo-400 shadow"
+                  >
+                    📊 品牌競品健檢任務
+                  </button>
+                  <button
+                    id="vizScenBtn-cs"
+                    onclick="selectVizScenario('cs')"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-slate-950 text-slate-300 border-slate-800 hover:border-cyan-500/40"
+                  >
+                    ✈️ 跨境客服自動化處理
+                  </button>
+                  <button
+                    id="vizScenBtn-ins"
+                    onclick="selectVizScenario('ins')"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-slate-950 text-slate-300 border-slate-800 hover:border-amber-500/40"
+                  >
+                    🛡️ 壽險刁鑽保戶異議破壁與高 ROAS 修正
+                  </button>
                 </div>
+
+                <!-- 步進與自動播放按鈕組 -->
+                <div class="flex items-center justify-between sm:justify-end gap-2">
+                  <button
+                    onclick="stepTheoryReAct(-1)"
+                    class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition flex items-center gap-1"
+                  >
+                    <i class="fa-solid fa-arrow-left"></i> 上一步 (Prev)
+                  </button>
+                  <span id="theoryReactStepBadge" class="text-xs font-mono font-extrabold px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                    Stage 1 / 5
+                  </span>
+                  <button
+                    onclick="stepTheoryReAct(1)"
+                    class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white shadow transition flex items-center gap-1"
+                  >
+                    下一步 (Next) <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                  <button
+                    id="vizAutoPlayBtn"
+                    onclick="toggleVizAutoPlay()"
+                    class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5"
+                  >
+                    <i id="vizAutoPlayIcon" class="fa-solid fa-play"></i>
+                    <span id="vizAutoPlayText">自動播放循環</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 當前情境任務目標橫幅 -->
+              <div class="px-3.5 py-2.5 rounded-xl bg-slate-950 border border-indigo-500/30 flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div class="flex items-center gap-2">
-                  <button onclick="stepTheoryReAct(-1)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700">
-                    &larr; 上一步
-                  </button>
-                  <span id="theoryReactStepBadge" class="text-xs font-mono font-bold px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300">Step 1 / 5</span>
-                  <button onclick="stepTheoryReAct(1)" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white shadow">
-                    下一步 &rarr;
-                  </button>
+                  <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono font-bold text-[11px]">ACTIVE GOAL</span>
+                  <span id="vizScenarioGoalBanner" class="font-bold text-white">接收目標：「分析競品 X 本月新品上市聲量並產出反制策略」</span>
                 </div>
+                <span class="text-[11px] text-slate-400">💡 提示：可直接點擊下方圖表中的任一圓角節點跳轉檢視狀態</span>
               </div>
 
-              <!-- 5 節點進度列 -->
-              <div class="grid grid-cols-5 gap-2 text-center text-[11px] font-bold">
-                <div id="tNode-0" class="p-2 rounded-xl border border-indigo-500 bg-indigo-950/70 text-white">1. 接收目標與感知</div>
-                <div id="tNode-1" class="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400">2. 第一輪工具試算</div>
-                <div id="tNode-2" class="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400">3. 觀察警告與反思</div>
-                <div id="tNode-3" class="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400">4. 修正參數重試</div>
-                <div id="tNode-4" class="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400">5. 驗證達標與交付</div>
+              <!-- ==================== [SVG 互動式 AI Agent 狀態機閉環架構圖] ==================== -->
+              <div class="relative rounded-2xl bg-slate-950 border border-slate-800/90 p-3 sm:p-4 overflow-x-auto">
+                <svg viewBox="0 0 1000 390" class="w-full min-w-[760px] h-auto select-none">
+                  <defs>
+                    <marker id="arrow-idle" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569" />
+                    </marker>
+                    <marker id="arrow-active-cyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+                    </marker>
+                    <marker id="arrow-active-amber" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#fbbf24" />
+                    </marker>
+                    <marker id="arrow-active-emerald" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399" />
+                    </marker>
+                    <linearGradient id="bgGridGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.35" />
+                      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.1" />
+                    </linearGradient>
+                  </defs>
+
+                  <!-- 背景裝飾網格區 -->
+                  <rect x="10" y="10" width="980" height="370" rx="18" fill="url(#bgGridGrad)" stroke="#1e293b" stroke-width="1" />
+
+                  <!-- ==================== 頂部：自我反思退回迴圈 (Stage 4 Observe_Reflect -> Stage 2 Plan) ==================== -->
+                  <path
+                    id="svgEdge-reflect-loop"
+                    d="M 705 125 C 705 32, 315 32, 315 125"
+                    fill="none"
+                    stroke="#475569"
+                    stroke-width="2.5"
+                    stroke-dasharray="6 5"
+                    marker-end="url(#arrow-idle)"
+                  />
+                  <g id="svgBadge-reflect-loop" class="cursor-pointer" onclick="jumpToTheoryReActStage(3)">
+                    <rect x="375" y="18" width="270" height="30" rx="15" fill="#1e293b" stroke="#475569" stroke-width="1.5" id="svgReflectPillBg" />
+                    <text x="510" y="37" text-anchor="middle" fill="#cbd5e1" font-size="11.5" font-weight="700" id="svgReflectPillText">
+                      🔄 ReAct 自我修正迴圈 (未達標退回重新規劃)
+                    </text>
+                  </g>
+
+                  <!-- ==================== 中央順向主幹連線 (1 -> 2 -> 3 -> 4 -> 5) ==================== -->
+                  <!-- Edge 1 -> 2 -->
+                  <line id="svgEdge-0-1" x1="190" y1="175" x2="238" y2="175" stroke="#475569" stroke-width="3" marker-end="url(#arrow-idle)" />
+                  <!-- Edge 2 -> 3 -->
+                  <line id="svgEdge-1-2" x1="392" y1="175" x2="438" y2="175" stroke="#475569" stroke-width="3" marker-end="url(#arrow-idle)" />
+                  <!-- Edge 3 -> 4 -->
+                  <line id="svgEdge-2-3" x1="592" y1="175" x2="638" y2="175" stroke="#475569" stroke-width="3" marker-end="url(#arrow-idle)" />
+                  <!-- Edge 4 -> 5 -->
+                  <line id="svgEdge-3-4" x1="792" y1="175" x2="828" y2="175" stroke="#475569" stroke-width="3" marker-end="url(#arrow-idle)" />
+
+                  <!-- ==================== 底部：長期記憶庫 (Memory / RAG / Firestore) 雙向連線 ==================== -->
+                  <!-- Plan (Node 2) <-> Memory -->
+                  <path
+                    id="svgEdge-mem-plan"
+                    d="M 315 225 L 315 315 L 405 315"
+                    fill="none"
+                    stroke="#334155"
+                    stroke-width="2"
+                    stroke-dasharray="4 4"
+                  />
+                  <!-- Act_Tool (Node 3) <-> External APIs / DB -->
+                  <path
+                    id="svgEdge-mem-tool"
+                    d="M 515 225 L 515 278"
+                    fill="none"
+                    stroke="#334155"
+                    stroke-width="2"
+                    stroke-dasharray="4 4"
+                  />
+                  <!-- Output (Node 5) -> Memory Write -->
+                  <path
+                    id="svgEdge-mem-output"
+                    d="M 905 225 L 905 315 L 625 315"
+                    fill="none"
+                    stroke="#334155"
+                    stroke-width="2"
+                    stroke-dasharray="4 4"
+                  />
+
+                  <!-- 底部記憶與外部工具中樞節點 -->
+                  <g transform="translate(410, 282)">
+                    <rect id="svgMemoryHubBox" x="0" y="0" width="210" height="64" rx="14" fill="#0f172a" stroke="#475569" stroke-width="1.8" />
+                    <text x="105" y="25" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="800">
+                      🗄️ 長期記憶與外部工具生態系
+                    </text>
+                    <text x="105" y="45" text-anchor="middle" fill="#94a3b8" font-size="10.5" font-family="JetBrains Mono, monospace">
+                      RAG Vector DB / CRM / APIs
+                    </text>
+                  </g>
+
+                  <!-- ==================== 5 大核心互動節點 (Nodes 0 ~ 4) ==================== -->
+                  <!-- Node 0: Perceive -->
+                  <g id="svgNodeGroup-0" class="cursor-pointer" onclick="jumpToTheoryReActStage(0)" transform="translate(30, 125)">
+                    <rect id="svgNodeRect-0" x="0" y="0" width="160" height="100" rx="16" fill="#1e1b4b" stroke="#6366f1" stroke-width="2.5" />
+                    <text x="16" y="26" fill="#818cf8" font-size="10.5" font-family="JetBrains Mono, monospace" font-weight="700">STAGE 01</text>
+                    <text x="138" y="28" text-anchor="end" font-size="16">👂</text>
+                    <text x="16" y="52" fill="#ffffff" font-size="13.5" font-weight="800">1. 感知與解析</text>
+                    <text x="16" y="71" fill="#cbd5e1" font-size="11" font-family="JetBrains Mono, monospace">Perceive</text>
+                    <text x="16" y="88" fill="#94a3b8" font-size="10">解析模糊目標與脈絡</text>
+                  </g>
+
+                  <!-- Node 1: Plan -->
+                  <g id="svgNodeGroup-1" class="cursor-pointer" onclick="jumpToTheoryReActStage(1)" transform="translate(235, 125)">
+                    <rect id="svgNodeRect-1" x="0" y="0" width="160" height="100" rx="16" fill="#0f172a" stroke="#334155" stroke-width="2" />
+                    <text x="16" y="26" fill="#c084fc" font-size="10.5" font-family="JetBrains Mono, monospace" font-weight="700">STAGE 02</text>
+                    <text x="138" y="28" text-anchor="end" font-size="16">🧠</text>
+                    <text x="16" y="52" fill="#ffffff" font-size="13.5" font-weight="800">2. 大腦規劃拆解</text>
+                    <text x="16" y="71" fill="#cbd5e1" font-size="11" font-family="JetBrains Mono, monospace">Plan (CoT)</text>
+                    <text x="16" y="88" fill="#94a3b8" font-size="10">拆解步驟與檢索記憶</text>
+                  </g>
+
+                  <!-- Node 2: Act_Tool -->
+                  <g id="svgNodeGroup-2" class="cursor-pointer" onclick="jumpToTheoryReActStage(2)" transform="translate(435, 125)">
+                    <rect id="svgNodeRect-2" x="0" y="0" width="160" height="100" rx="16" fill="#0f172a" stroke="#334155" stroke-width="2" />
+                    <text x="16" y="26" fill="#38bdf8" font-size="10.5" font-family="JetBrains Mono, monospace" font-weight="700">STAGE 03</text>
+                    <text x="138" y="28" text-anchor="end" font-size="16">🔧</text>
+                    <text x="16" y="52" fill="#ffffff" font-size="13.5" font-weight="800">3. 工具調用執行</text>
+                    <text x="16" y="71" fill="#cbd5e1" font-size="11" font-family="JetBrains Mono, monospace">Act_Tool</text>
+                    <text x="16" y="88" fill="#94a3b8" font-size="10">呼叫外部 API 與算力</text>
+                  </g>
+
+                  <!-- Node 3: Observe_Reflect -->
+                  <g id="svgNodeGroup-3" class="cursor-pointer" onclick="jumpToTheoryReActStage(3)" transform="translate(635, 125)">
+                    <rect id="svgNodeRect-3" x="0" y="0" width="160" height="100" rx="16" fill="#0f172a" stroke="#334155" stroke-width="2" />
+                    <text x="16" y="26" fill="#fbbf24" font-size="10.5" font-family="JetBrains Mono, monospace" font-weight="700">STAGE 04</text>
+                    <text x="138" y="28" text-anchor="end" font-size="16">🔄</text>
+                    <text x="16" y="52" fill="#ffffff" font-size="13.5" font-weight="800">4. 觀察與反思</text>
+                    <text x="16" y="71" fill="#cbd5e1" font-size="11" font-family="JetBrains Mono, monospace">Observe_Reflect</text>
+                    <text x="16" y="88" fill="#94a3b8" font-size="10">檢核結果・未達標重試</text>
+                  </g>
+
+                  <!-- Node 4: Output -->
+                  <g id="svgNodeGroup-4" class="cursor-pointer" onclick="jumpToTheoryReActStage(4)" transform="translate(830, 125)">
+                    <rect id="svgNodeRect-4" x="0" y="0" width="145" height="100" rx="16" fill="#0f172a" stroke="#334155" stroke-width="2" />
+                    <text x="14" y="26" fill="#34d399" font-size="10.5" font-family="JetBrains Mono, monospace" font-weight="700">STAGE 05</text>
+                    <text x="126" y="28" text-anchor="end" font-size="16">🏁</text>
+                    <text x="14" y="52" fill="#ffffff" font-size="13.5" font-weight="800">5. 最終交付</text>
+                    <text x="14" y="71" fill="#cbd5e1" font-size="11" font-family="JetBrains Mono, monospace">Output</text>
+                    <text x="14" y="88" fill="#94a3b8" font-size="10">產出報告與寫入記憶</text>
+                  </g>
+                </svg>
               </div>
 
-              <!-- 步進詳細說明卡 -->
-              <div id="theoryReactDisplay" class="p-4 rounded-xl bg-slate-950 border border-indigo-500/30 text-xs sm:text-sm space-y-2">
-                <!-- 由 JS 渲染 -->
+              <!-- 5 節點快速點擊橫條 (方便手機與平板操作) -->
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-[11px] font-bold">
+                <button onclick="jumpToTheoryReActStage(0)" id="tNode-0" class="p-2 rounded-xl border border-indigo-500 bg-indigo-950/70 text-white transition">1. Perceive 感知解析</button>
+                <button onclick="jumpToTheoryReActStage(1)" id="tNode-1" class="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 transition">2. Plan 大腦規劃</button>
+                <button onclick="jumpToTheoryReActStage(2)" id="tNode-2" class="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 transition">3. Act_Tool 工具調用</button>
+                <button onclick="jumpToTheoryReActStage(3)" id="tNode-3" class="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 transition">4. Observe 觀察反思</button>
+                <button onclick="jumpToTheoryReActStage(4)" id="tNode-4" class="col-span-2 sm:col-span-1 p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 transition">5. Output 最終交付</button>
+              </div>
+
+              <!-- ==================== [底部即時狀態檢視面板 (Detailed Real-Time Inspector Card)] ==================== -->
+              <div id="theoryReactDisplay" class="p-4 sm:p-5 rounded-2xl bg-slate-950 border border-indigo-500/40 space-y-4 shadow-inner">
+                <!-- 由 renderTheoryReActStep() 動態渲染 Thought / Action Payload JSON / Observation -->
               </div>
             </div>
           </div>
@@ -2655,29 +2876,257 @@ async function runReActAgentLoop(userGoal, maxIterations = 5) {
       }
     };
 
-    const theoryReActSteps = [
-      {
-        title: "Step 1 / 5：Perceive（接收模糊商業目標與感知環境）",
-        desc: "人類主管下達高階指令：<strong>「幫我診斷 AromaTech Q3 聲量並試算 $50,000 預算的獲利 ROAS，若低於 2.0 請自動優化參數。」</strong> Agent 解析出這是一個需要「多步驟查詢＋財務驗證＋開立工單」的複合任務。"
+    // 互動視覺化：體驗 AI Agent 的「感知—思考—行動」循環（3 大商業任務情境 × 5 階段閉環完整負載）
+    const interactiveVizScenarios = {
+      brand: {
+        name: "📊 品牌競品健檢任務",
+        goalBanner: "接收目標：「分析競品 X 本月新品上市聲量並產出反制策略」",
+        steps: [
+          {
+            stageCode: "Perceive (1. 感知與目標解析)",
+            badge: "STAGE 01 / PERCEIVE",
+            title: "1. 感知與目標解析：接收使用者模糊指令與環境脈絡",
+            desc: "接收目標「分析競品 X 本月新品上市聲量並產出反制策略」。Agent 解析出此任務需要外部市場輿情數據、內部產品優勢比對，以及最終的差異化行銷行動方案。",
+            thought: "收到高階經理人的模糊指令。我不能憑空捏造競品數據，必須先拆解子任務：第一，抓取競品 X 本月社群評價；第二，檢索內部記憶庫比對產品規格與價格帶；第三，綜合擬定反制策略。",
+            payload: {
+              event: "USER_GOAL_RECEIVED",
+              rawGoal: "分析競品 X 本月新品上市聲量並產出反制策略",
+              extractedEntities: { competitor: "Brand_X", timeframe: "Current_Month", deliverable: "Counter_Strategy_Matrix" }
+            },
+            observation: "環境感知完成：已建立短期工作記憶（Context Window），準備進入大腦 CoT 規劃階段。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Plan (2. 大腦規劃與任務拆解)",
+            badge: "STAGE 02 / PLAN (CoT)",
+            title: "2. 大腦規劃與任務拆解：LLM 啟動 CoT 拆解子任務並檢索長期記憶",
+            desc: "拆解為 3 步驟：1. 搜尋競品新聞與社群評價 2. 調用企業知識庫比對自身產品優勢 3. 撰寫策略矩陣。",
+            thought: "啟動思維鏈（Chain-of-Thought）並讀取長期記憶庫（RAG Vector DB）中的我方品牌定位指南。決定先產生 `functionCall` 呼叫輿情爬蟲工具與搜尋 API 蒐集 500 筆真實消費者評論。",
+            payload: {
+              planMethod: "ReAct_CoT_Decomposition",
+              memoryRetrieved: "Brand_Positioning_Playbook_2026.pdf",
+              plannedSubTasks: [
+                "Step_A: invoke searchSocialSentiment(competitor='Brand_X', limit=500)",
+                "Step_B: invoke comparePriceBand(category='Smart_Appliance')",
+                "Step_C: synthesize 3 counter-marketing actions"
+              ]
+            },
+            observation: "規劃完成並載入企業長期記憶，即將觸發外部工具調用（Function Calling）。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Act_Tool (3. 工具調用與執行)",
+            badge: "STAGE 03 / ACT & TOOL USE",
+            title: "3. 工具調用與執行：呼叫外部 API、搜尋引擎或資料庫讀寫",
+            desc: "呼叫 Web Search API 與社群輿情分析工具抓取 500 筆評論數據，計算正負評情緒佔比。",
+            thought: "正在向外部環境發出結構化 JSON 工具呼叫請求 `searchSocialSentiment`...",
+            payload: {
+              functionCall: {
+                name: "searchSocialSentiment",
+                args: {
+                  targetBrand: "Competitor_X",
+                  sampleSize: 500,
+                  channels: ["Threads", "Instagram", "Dcard", "Mobile01"]
+                }
+              }
+            },
+            observation: "外部 API 回傳 500 筆評論：競品 X 新品討論度高，但有 34% 負評集中抱怨「耗材配件價格過高且無舊換新補貼」。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Observe_Reflect (4. 觀察與自我反思)",
+            badge: "STAGE 04 / OBSERVE & SELF-REFLECT",
+            title: "4. 觀察與自我反思：驗證結果是否達標，未達標則觸發退回迴圈修正",
+            desc: "發現缺少價格帶對比與促銷折扣深度數據 -> 觸發自我修正（Self-Reflection），退回第 2 步重新規劃並補調用電商比價工具補齊資料！",
+            thought: "【自我反思啟動】雖然已經抓到競品 X 的 500 筆評論痛點，但我發現目前缺少「各通路實際成交價格帶與折扣深度對比數據」！若現在直接寫報告會淪為空談，我必須退回 Plan 階段，補呼叫 `analyzeCompetitorPricing` 電商比價工具！",
+            payload: {
+              reflectionCheck: "INCOMPLETE_DATA_DETECTED",
+              missingDimension: "Competitor_Promo_Discount_Depth & Price_Band_Comparison",
+              selfCorrectionAction: "LOOP_BACK_TO_PLAN -> invoke analyzeCompetitorPricing(competitor='Competitor_X')"
+            },
+            observation: "⚠️ 觸發紅色/琥珀色自我修正迴圈（Observe_Reflect -> Plan）：已自動補齊電商比價數據與 ROAS 試算（確認反制方案 ROAS 達 2.85），驗證通過！",
+            isLoopingBack: true
+          },
+          {
+            stageCode: "Output (5. 最終交付與記憶寫入)",
+            badge: "STAGE 05 / FINAL OUTPUT",
+            title: "5. 最終交付與記憶寫入：產出結構化商業成果並更新長期記憶",
+            desc: "輸出完整品牌健檢報告與 3 項差異化行銷行動方案，同時將本次競品情報寫入企業長期記憶庫（Memory）。",
+            thought: "所有內部聲量、外部評論痛點與價格帶比價數據皆已齊備並通過反思檢核，現在產出高階主管決策報告並自動建立跨部門派工單。",
+            payload: {
+              deliverableStatus: "COMPLETED_AND_VERIFIED",
+              memoryWriteBack: "Saved to Firestore / VectorDB (Collection: competitor_insights_2026Q4)",
+              executiveActionItems: [
+                "1. 主打『終身耗材 7 折訂閱制』精準打擊競品 X 耗材昂貴痛點",
+                "2. 推出競品舊機換購補貼 $500 攔截猶豫客群",
+                "3. 鎖定高意圖搜尋字詞，預期實現 ROAS 2.85"
+              ]
+            },
+            observation: "✅ 閉環任務圓滿達成！已產出結構化報告並同步更新企業長期知識庫。",
+            isLoopingBack: false
+          }
+        ]
       },
-      {
-        title: "Step 2 / 5：Plan & First Tool Call（拆解任務並執行第一輪工具調用）",
-        desc: "Agent 依序呼叫 <code>queryBrandMetrics</code> 與 <code>analyzeCompetitorPricing</code> 取得內外部情報後，帶著初始參數（CPC $2.5、轉換率 1.2%）呼叫 <code>calculateCampaignROI</code> 進行第一次驗算。"
+      cs: {
+        name: "✈️ 跨境客服自動化處理",
+        goalBanner: "接收客戶訊息：「包裹卡在海關三天了，我要改寄到飯店或申請退費」",
+        steps: [
+          {
+            stageCode: "Perceive (1. 感知與目標解析)",
+            badge: "STAGE 01 / PERCEIVE",
+            title: "1. 感知與目標解析：解析跨國客訴情緒與雙重訴求",
+            desc: "接收客戶訊息「包裹卡在海關三天了，我要改寄到飯店或申請退費」。Agent 識別出高焦慮情緒，以及「查詢清關狀態」、「評估改址可行性」與「退費政策判定」三項複合意圖。",
+            thought: "客戶正處於旅途焦慮中，提出「改寄飯店」或「申請退費」兩個選項。我必須先確認包裹真實清關狀態與預計送達時間，才能給出最符合客戶利益且降低公司退貨損失的方案。",
+            payload: {
+              event: "INCOMING_CROSS_BORDER_TICKET",
+              customerSentiment: "ANXIOUS_HIGH_PRIORITY",
+              orderId: "ORD-2026-88912",
+              detectedIntents: ["Check_Customs_Status", "Evaluate_Address_Change", "Check_Refund_Eligibility"]
+            },
+            observation: "成功解析客訴工單編號與雙重訴求，準備檢索訂單記憶與物流工具。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Plan (2. 大腦規劃與任務拆解)",
+            badge: "STAGE 02 / PLAN (CoT)",
+            title: "2. 大腦規劃與任務拆解：檢索客戶訂單記憶、規劃物流與退換貨政策查詢",
+            desc: "檢索客戶訂單編號、規劃呼叫跨境物流 API、並比對企業退換貨政策記憶庫。",
+            thought: "從長期記憶讀取該名 VIP 客戶歷史紀錄與跨境退換貨規章。拆解執行順序：1. 呼叫 DHL 物流 API 查明海關放行時間；2. 呼叫 CRM 計算臨時改寄飯店之手續費與時效影響。",
+            payload: {
+              planMethod: "Customer_Retention_Priority_CoT",
+              memoryRetrieved: "CrossBorder_SLA_Policy_v4.json (VIP_Tier: Gold)",
+              plannedToolCalls: ["queryDHLLogistics(trackingNo='DHL-992018')", "calculateRerouteFee(orderId='ORD-2026-88912')"]
+            },
+            observation: "完成多步驟查詢計畫，準備執行外部物流 API 調用。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Act_Tool (3. 工具調用與執行)",
+            badge: "STAGE 03 / ACT & TOOL USE",
+            title: "3. 工具調用與執行：呼叫 DHL 物流 API 與 CRM 改址試算工具",
+            desc: "呼叫 DHL 物流 API 確認清關狀態，並調用 CRM 系統計算改址費用與時效。",
+            thought: "正在同步調用 `queryDHLLogistics` 與 `calculateRerouteFee` 取得即時跨境物流狀態...",
+            payload: {
+              functionCall: {
+                name: "queryDHLLogistics",
+                args: { trackingNo: "DHL-992018", includeCustomsDetail: true }
+              }
+            },
+            observation: "API 回傳關鍵情報：包裹已於 20 分鐘前完成海關放行，預計明日上午 10:30 即可送達原填寫地址！若現在申請改寄飯店，反而會延誤 48 小時。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Observe_Reflect (4. 觀察與自我反思)",
+            badge: "STAGE 04 / OBSERVE & SELF-REFLECT",
+            title: "4. 觀察與自我反思：評估最佳客戶體驗並自我修正補償方案",
+            desc: "確認包裹已放行將於明日送達，判斷無需退費或改址（改址反而延誤），主動退回規劃階段調用「發送 9 折關懷補償券」工具以平撫客戶情緒！",
+            thought: "【自我反思啟動】既然包裹明天早上就能送到原地址，若照字面幫客戶改址反而會害他晚兩天拿到，直接退費也會造成公司損失。我應該退回規劃階段，多呼叫一個 `issueCareVoucher` 工具發送 9 折關懷折扣碼，並向客戶清楚說明「維持原址明日即達」的好消息！",
+            payload: {
+              reflectionDecision: "AVOID_DELAY_AND_RETAIN_ORDER",
+              insight: "Rerouting adds +48hrs delay; Customs already cleared for tomorrow AM delivery.",
+              selfCorrectionAction: "LOOP_BACK_TO_PLAN -> invoke issueCareVoucher(discount='10%_OFF', reason='Customs_Delay_Care')"
+            },
+            observation: "⚠️ 觸發自我修正迴圈（Observe_Reflect -> Plan）：已自動生成專屬 9 折關懷優惠碼 `CARE90`，兼顧零退單率與高客戶滿意度！",
+            isLoopingBack: true
+          },
+          {
+            stageCode: "Output (5. 最終交付與記憶寫入)",
+            badge: "STAGE 05 / FINAL OUTPUT",
+            title: "5. 最終交付與記憶寫入：自動回覆客戶進度、發送關懷券並更新 CRM 工單",
+            desc: "自動回覆客戶最新派送進度、發送 9 折關懷折扣碼並更新工單狀態為「已安撫結案」。",
+            thought: "物流確認與關懷折扣碼皆已就緒，立即輸出溫暖專業的回覆信件並將處理紀錄寫回 CRM 長期記憶庫。",
+            payload: {
+              ticketResolution: "RESOLVED_WITHOUT_REFUND",
+              voucherIssued: "CARE90 (Next Purchase 10% Off)",
+              customerReplySummary: "通知包裹已清關放行將於明日 10:30 送達原址（免除改址延誤風險），並附上 9 折關懷禮券。"
+            },
+            observation: "✅ 跨境客服閉環完成！成功為企業挽回訂單並獲得客戶五星好評。",
+            isLoopingBack: false
+          }
+        ]
       },
-      {
-        title: "Step 3 / 5：Observe & Self-Reflect（觀察工具回傳警告並啟動自我反思）",
-        desc: "本地工具精算出 <strong>ROAS 僅 0.58（淨損 -$21,200）</strong>，並回傳 <code>WARNING_LOW_ROAS_NEEDS_REFLECTION</code>。傳統 AI 會到此結束，但 AI Agent 觀察到此警訊後啟動反思：<strong>「原始廣泛投放必虧，我必須調整轉換率至 2.2% 並壓低 CPC 至 $1.8 重新驗證！」</strong>"
-      },
-      {
-        title: "Step 4 / 5：Second Tool Call（帶著優化後參數再次呼叫工具驗證）",
-        desc: "Agent 在第 2 輪迴圈主動帶入修正後參數（CPC $1.8、轉換率 2.2%）再次呼叫 <code>calculateCampaignROI</code>，這次工具回傳 <strong>ROAS 2.93（淨利 +$96,640）</strong>，狀態為 <code>OPTIMAL_ROAS_ACHIEVED</code>！"
-      },
-      {
-        title: "Step 5 / 5：Action Ticket & Final Report（開立跨部門派工單與交付高階決策報告）",
-        desc: "確認財務模型達標後，Agent 呼叫 <code>createActionTicket</code> 為數位成長部建立高優先級派工單，並綜合前四步的所有數據，撰寫出段落分明、重點粗體標示的高階主管決策報告。"
+      ins: {
+        name: "🛡️ 壽險刁鑽保戶異議破壁與高 ROAS 修正",
+        goalBanner: "接收目標：「針對高淨值保戶推廣傳承保單，確保轉換漏斗 ROAS >= 2.0」",
+        steps: [
+          {
+            stageCode: "Perceive (1. 感知與目標解析)",
+            badge: "STAGE 01 / PERCEIVE",
+            title: "1. 感知與目標解析：解析高資產保戶異議痛點與財務目標",
+            desc: "接收目標「針對高淨值保戶推廣家族傳承保單，化解『錢鎖在保險不如買美債 ETF』之刁鑽異議，並確保行銷投放 ROAS >= 2.0」。",
+            thought: "此任務結合了「SPIN 顧問式銷售異議處理」與「精準財務 ROAS 檢核」。我必須先調出高資產保戶常見異議庫，並試算線上研討會名單漏斗的財務投報率。",
+            payload: {
+              event: "HIGH_NET_WORTH_CAMPAIGN_GOAL",
+              coreObjection: "資金流動性疑慮與美債殖利率比較",
+              financialConstraint: "Target_ROAS >= 2.0"
+            },
+            observation: "完成目標解析，準備啟動 SPIN 話術檢索與第一輪財務試算。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Plan (2. 大腦規劃與任務拆解)",
+            badge: "STAGE 02 / PLAN (CoT)",
+            title: "2. 大腦規劃與任務拆解：檢索 SPIN 異議破壁知識庫與規劃 ROI 驗算",
+            desc: "從長期記憶庫讀取高資產稅務傳承案例，並規劃呼叫 `calculateCampaignROI` 驗算首輪投放參數。",
+            thought: "先從記憶庫載入「預留稅源與資產隔離」SPIN 提問框架，接著呼叫 `calculateCampaignROI` 測試目前廣泛投放高球俱樂部受眾的財務效益。",
+            payload: {
+              planMethod: "SPIN_Objection_Breaker + Financial_Gatekeeper",
+              memoryRetrieved: "HNW_Estate_Tax_SPIN_Scripts_2026.docx",
+              plannedToolCall: "calculateCampaignROI(budget=60000, targetCPC=5.0, conversionRate=0.5, avgOrderValue=1500)"
+            },
+            observation: "規劃就緒，即將呼叫本地財務試算工具。",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Act_Tool (3. 工具調用與執行)",
+            badge: "STAGE 03 / ACT & TOOL USE",
+            title: "3. 工具調用與執行：執行第一輪行銷活動 ROI 精算函數",
+            desc: "呼叫 `calculateCampaignROI` 精算預算 $60,000、CPC $5.0、轉換率 0.5% 之實際投報率。",
+            thought: "將初始投放參數送入確定性 JavaScript 函數 `calculateCampaignROI` 進行精算...",
+            payload: {
+              functionCall: {
+                name: "calculateCampaignROI",
+                args: { budget: 60000, targetCPC: 5.0, conversionRate: 0.5, avgOrderValue: 1500 }
+              }
+            },
+            observation: "工具回傳結果：預計僅獲 60 筆簽單，ROAS 僅 1.50（淨損 -$15,000），系統回傳 `WARNING_LOW_ROAS_NEEDS_REFLECTION`！",
+            isLoopingBack: false
+          },
+          {
+            stageCode: "Observe_Reflect (4. 觀察與自我反思)",
+            badge: "STAGE 04 / OBSERVE & SELF-REFLECT",
+            title: "4. 觀察與自我反思：攔截 ROAS < 2.0 警訊並啟動漏斗重構迴圈",
+            desc: "發現首輪 ROAS 僅 1.50 未達 2.0 門檻 -> 觸發自我修正退回 Plan，導入「AI 家族傳承稅務互動試算器」將 CPC 壓低至 $3.2、轉換率提升至 1.4% 重新驗證！",
+            thought: "【自我反思啟動】ROAS 1.50 低於公司 2.0 硬性門檻！原因在於直接推銷保單導致點擊成本過高（$5.0）且轉換率過低（0.5%）。我必須退回 Plan 階段，改以「3分鐘家族傳承稅額互動診斷工具」作為前端誘因，將 CPC 降至 $3.2、轉換率拉升至 1.4% 再算一次！",
+            payload: {
+              reflectionStatus: "WARNING_LOW_ROAS_INTERCEPTED",
+              firstPassROAS: 1.50,
+              selfCorrectionAction: "LOOP_BACK_TO_PLAN -> Re-invoke calculateCampaignROI(budget=60000, targetCPC=3.2, conversionRate=1.4, avgOrderValue=1500)"
+            },
+            observation: "⚠️ 觸發自我修正迴圈（Observe_Reflect -> Plan）：第二輪重新驗證後 ROAS 躍升至 6.56（預估淨利 +$333,000），完美通過財務守門員檢核！",
+            isLoopingBack: true
+          },
+          {
+            stageCode: "Output (5. 最終交付與記憶寫入)",
+            badge: "STAGE 05 / FINAL OUTPUT",
+            title: "5. 最終交付與記憶寫入：產出 SPIN 破壁教戰手冊與高獲利派工單",
+            desc: "輸出高資產保戶 SPIN 異議應對腳本、建立高資產業務發展部派工單並寫入長期記憶庫。",
+            thought: "財務模型與 SPIN 破壁腳本皆已驗證達標，立即產出最終策略報告並寫入企業知識庫。",
+            payload: {
+              deliverableStatus: "OPTIMAL_ROAS_6.56_VERIFIED",
+              actionTicketCreated: "TCK-8821 (高資產客戶業務發展部 - CRITICAL)",
+              spinScriptHighlight: "Situation -> Problem(美債無指定受益人免遺產稅功能) -> Implication(資產凍結風險) -> Need-Payoff(預留稅源即時變現)"
+            },
+            observation: "✅ 壽險異議破壁與 ROAS 修正閉環完成！",
+            isLoopingBack: false
+          }
+        ]
       }
-    ];
+    };
+
+    let currentVizScenarioKey = "brand";
     let currentTheoryReactIdx = 0;
+    let vizAutoPlayTimer = null;
 
     const academyQuizQuestions = [
       {
@@ -2830,29 +3279,250 @@ async function runReActAgentLoop(userGoal, maxIterations = 5) {
       `;
     };
 
-    window.stepTheoryReAct = function(delta) {
-      currentTheoryReactIdx = (currentTheoryReactIdx + delta + theoryReActSteps.length) % theoryReActSteps.length;
+    // 直接從頂部導覽跳轉至 Module 03 互動閉環視覺化
+    window.openVisualLoopModuleDirectly = function() {
+      switchMainWorkspaceView("academy");
+      selectAcademyModule(3);
       renderTheoryReActStep();
     };
 
-    function renderTheoryReActStep() {
-      const step = theoryReActSteps[currentTheoryReactIdx];
-      document.getElementById("theoryReactStepBadge").textContent = `Step ${currentTheoryReactIdx + 1} / ${theoryReActSteps.length}`;
-      for (let i = 0; i < theoryReActSteps.length; i++) {
-        const node = document.getElementById(`tNode-${i}`);
-        if (!node) continue;
-        if (i === currentTheoryReactIdx) {
-          node.className = "p-2 rounded-xl border border-amber-400 bg-amber-500/20 text-amber-200 shadow";
-        } else if (i < currentTheoryReactIdx) {
-          node.className = "p-2 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-300";
+    // 切換互動視覺化的 3 大商業任務情境
+    window.selectVizScenario = function(scenKey) {
+      currentVizScenarioKey = interactiveVizScenarios[scenKey] ? scenKey : "brand";
+      currentTheoryReactIdx = 0;
+
+      const btnMap = {
+        brand: "vizScenBtn-brand",
+        cs: "vizScenBtn-cs",
+        ins: "vizScenBtn-ins"
+      };
+      Object.entries(btnMap).forEach(([k, btnId]) => {
+        const el = document.getElementById(btnId);
+        if (!el) return;
+        if (k === currentVizScenarioKey) {
+          el.className = "px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-indigo-600 text-white border-indigo-400 shadow";
         } else {
-          node.className = "p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400";
+          el.className = "px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-slate-950 text-slate-300 border-slate-800 hover:border-indigo-500/40";
+        }
+      });
+
+      const scenObj = interactiveVizScenarios[currentVizScenarioKey];
+      const bannerEl = document.getElementById("vizScenarioGoalBanner");
+      if (bannerEl && scenObj) {
+        bannerEl.textContent = scenObj.goalBanner;
+      }
+      renderTheoryReActStep();
+    };
+
+    window.jumpToTheoryReActStage = function(idx) {
+      const steps = interactiveVizScenarios[currentVizScenarioKey].steps;
+      currentTheoryReactIdx = Math.max(0, Math.min(steps.length - 1, Number(idx) || 0));
+      renderTheoryReActStep();
+    };
+
+    window.stepTheoryReAct = function(delta) {
+      const steps = interactiveVizScenarios[currentVizScenarioKey].steps;
+      currentTheoryReactIdx = (currentTheoryReactIdx + delta + steps.length) % steps.length;
+      renderTheoryReActStep();
+    };
+
+    window.toggleVizAutoPlay = function() {
+      const btn = document.getElementById("vizAutoPlayBtn");
+      const icon = document.getElementById("vizAutoPlayIcon");
+      const text = document.getElementById("vizAutoPlayText");
+      if (vizAutoPlayTimer) {
+        clearInterval(vizAutoPlayTimer);
+        vizAutoPlayTimer = null;
+        icon.className = "fa-solid fa-play";
+        text.textContent = "自動播放循環";
+        btn.className = "px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5";
+      } else {
+        icon.className = "fa-solid fa-pause";
+        text.textContent = "暫停自動播放";
+        btn.className = "px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-400 text-xs font-bold transition flex items-center gap-1.5 shadow";
+        vizAutoPlayTimer = setInterval(() => {
+          stepTheoryReAct(1);
+        }, 2800);
+      }
+    };
+
+    function renderTheoryReActStep() {
+      const scenObj = interactiveVizScenarios[currentVizScenarioKey] || interactiveVizScenarios.brand;
+      const steps = scenObj.steps;
+      const step = steps[currentTheoryReactIdx];
+
+      const badgeEl = document.getElementById("theoryReactStepBadge");
+      if (badgeEl) {
+        badgeEl.textContent = `Stage ${currentTheoryReactIdx + 1} / ${steps.length}`;
+      }
+
+      // 1. 更新手機/平板 5 節點按鈕列與 SVG 5 大節點狀態
+      for (let i = 0; i < steps.length; i++) {
+        const node = document.getElementById(`tNode-${i}`);
+        const svgRect = document.getElementById(`svgNodeRect-${i}`);
+        const svgGroup = document.getElementById(`svgNodeGroup-${i}`);
+
+        if (node) {
+          if (i === currentTheoryReactIdx) {
+            node.className = (i === 4 ? "col-span-2 sm:col-span-1 " : "") + "p-2 rounded-xl border border-amber-400 bg-amber-500/20 text-amber-200 shadow transition";
+          } else if (i < currentTheoryReactIdx) {
+            node.className = (i === 4 ? "col-span-2 sm:col-span-1 " : "") + "p-2 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 transition";
+          } else {
+            node.className = (i === 4 ? "col-span-2 sm:col-span-1 " : "") + "p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 transition";
+          }
+        }
+
+        if (svgRect && svgGroup) {
+          svgGroup.classList.remove("svg-node-active");
+          if (i === currentTheoryReactIdx) {
+            svgGroup.classList.add("svg-node-active");
+            svgRect.setAttribute("fill", i === 3 ? "#451a03" : "#1e1b4b");
+            svgRect.setAttribute("stroke", i === 3 ? "#fbbf24" : "#38bdf8");
+            svgRect.setAttribute("stroke-width", "3");
+          } else if (i < currentTheoryReactIdx) {
+            svgRect.setAttribute("fill", "#064e3b");
+            svgRect.setAttribute("stroke", "#10b981");
+            svgRect.setAttribute("stroke-width", "2");
+          } else {
+            svgRect.setAttribute("fill", "#0f172a");
+            svgRect.setAttribute("stroke", "#334155");
+            svgRect.setAttribute("stroke-width", "2");
+          }
         }
       }
-      document.getElementById("theoryReactDisplay").innerHTML = `
-        <div class="text-sm font-extrabold text-indigo-300">${step.title}</div>
-        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${step.desc}</p>
-      `;
+
+      // 2. 更新 SVG 順向連線箭頭動畫 (svgEdge-0-1, svgEdge-1-2, svgEdge-2-3, svgEdge-3-4)
+      for (let e = 0; e < 4; e++) {
+        const edgeEl = document.getElementById(`svgEdge-${e}-${e + 1}`);
+        if (!edgeEl) continue;
+        edgeEl.classList.remove("svg-flow-active");
+        if (e === currentTheoryReactIdx - 1 || (currentTheoryReactIdx === e)) {
+          edgeEl.setAttribute("stroke", "#38bdf8");
+          edgeEl.setAttribute("marker-end", "url(#arrow-active-cyan)");
+          edgeEl.classList.add("svg-flow-active");
+        } else if (e < currentTheoryReactIdx) {
+          edgeEl.setAttribute("stroke", "#10b981");
+          edgeEl.setAttribute("marker-end", "url(#arrow-active-emerald)");
+        } else {
+          edgeEl.setAttribute("stroke", "#475569");
+          edgeEl.setAttribute("marker-end", "url(#arrow-idle)");
+        }
+      }
+
+      // 3. 更新頂部「自我修正迴圈 (Observe_Reflect -> Plan)」視覺高亮與脈衝動畫
+      const loopEdge = document.getElementById("svgEdge-reflect-loop");
+      const loopPillBg = document.getElementById("svgReflectPillBg");
+      const loopPillText = document.getElementById("svgReflectPillText");
+      if (loopEdge && loopPillBg && loopPillText) {
+        if (step.isLoopingBack || currentTheoryReactIdx === 3) {
+          loopEdge.setAttribute("stroke", "#fbbf24");
+          loopEdge.setAttribute("stroke-width", "3.5");
+          loopEdge.setAttribute("marker-end", "url(#arrow-active-amber)");
+          loopEdge.classList.add("svg-flow-active");
+          loopPillBg.setAttribute("fill", "#78350f");
+          loopPillBg.setAttribute("stroke", "#fbbf24");
+          loopPillText.setAttribute("fill", "#fef08a");
+        } else {
+          loopEdge.setAttribute("stroke", "#475569");
+          loopEdge.setAttribute("stroke-width", "2.5");
+          loopEdge.setAttribute("marker-end", "url(#arrow-idle)");
+          loopEdge.classList.remove("svg-flow-active");
+          loopPillBg.setAttribute("fill", "#1e293b");
+          loopPillBg.setAttribute("stroke", "#475569");
+          loopPillText.setAttribute("fill", "#cbd5e1");
+        }
+      }
+
+      // 4. 更新底部「長期記憶庫與外部工具中樞」連線狀態
+      const memPlan = document.getElementById("svgEdge-mem-plan");
+      const memTool = document.getElementById("svgEdge-mem-tool");
+      const memOut = document.getElementById("svgEdge-mem-output");
+      const memHub = document.getElementById("svgMemoryHubBox");
+      if (memPlan && memTool && memOut && memHub) {
+        [memPlan, memTool, memOut].forEach(el => {
+          el.classList.remove("svg-flow-active");
+          el.setAttribute("stroke", "#334155");
+        });
+        memHub.setAttribute("stroke", "#475569");
+
+        if (currentTheoryReactIdx === 1) {
+          memPlan.setAttribute("stroke", "#c084fc");
+          memPlan.classList.add("svg-flow-active");
+          memHub.setAttribute("stroke", "#c084fc");
+        } else if (currentTheoryReactIdx === 2) {
+          memTool.setAttribute("stroke", "#38bdf8");
+          memTool.classList.add("svg-flow-active");
+          memHub.setAttribute("stroke", "#38bdf8");
+        } else if (currentTheoryReactIdx === 4) {
+          memOut.setAttribute("stroke", "#34d399");
+          memOut.classList.add("svg-flow-active");
+          memHub.setAttribute("stroke", "#34d399");
+        }
+      }
+
+      // 5. 渲染底部 Detailed Real-Time Inspector Card
+      const displayEl = document.getElementById("theoryReactDisplay");
+      if (displayEl) {
+        displayEl.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-1 rounded-lg font-mono text-xs font-extrabold ${
+                step.isLoopingBack
+                  ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                  : "bg-indigo-500/20 text-indigo-300 border border-indigo-500/40"
+              }">
+                ${escapeHtml(step.badge)}
+              </span>
+              <h4 class="text-sm sm:text-base font-extrabold text-white">${escapeHtml(step.title)}</h4>
+            </div>
+            <span class="text-xs font-mono text-cyan-300">${escapeHtml(scenObj.name)}</span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
+            ${escapeHtml(step.desc)}
+          </p>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-3.5 text-xs">
+            <!-- 欄位 1: 內部思考過程 (Thought) -->
+            <div class="p-3.5 rounded-xl bg-slate-900/95 border border-purple-500/30 space-y-1.5 flex flex-col justify-between">
+              <div>
+                <div class="font-bold text-purple-300 flex items-center gap-1.5 mb-1.5">
+                  <i class="fa-solid fa-brain"></i> 🧠 內部思考過程 (Internal Thought / CoT)
+                </div>
+                <p class="text-slate-200 leading-relaxed">${escapeHtml(step.thought)}</p>
+              </div>
+              <div class="text-[10px] font-mono text-slate-500 pt-2 border-t border-slate-800/80">
+                Node: ${escapeHtml(step.stageCode)}
+              </div>
+            </div>
+
+            <!-- 欄位 2: 工具調用與行動負載 (Action Payload JSON) -->
+            <div class="p-3.5 rounded-xl bg-slate-900/95 border border-cyan-500/30 space-y-1.5">
+              <div class="font-bold text-cyan-300 flex items-center gap-1.5 mb-1.5">
+                <i class="fa-solid fa-code"></i> 🔧 工具調用與行動負載 (Action / Payload JSON)
+              </div>
+              <pre class="p-2.5 rounded-lg bg-slate-950 text-[11px] font-mono text-cyan-200 overflow-x-auto max-h-40">${escapeHtml(JSON.stringify(step.payload, null, 2))}</pre>
+            </div>
+
+            <!-- 欄位 3: 系統觀察與反思決策 (Observation & Reflection) -->
+            <div class="p-3.5 rounded-xl ${
+              step.isLoopingBack
+                ? "bg-amber-950/30 border border-amber-500/50"
+                : "bg-slate-900/95 border border-emerald-500/30"
+            } space-y-1.5 flex flex-col justify-between">
+              <div>
+                <div class="font-bold ${step.isLoopingBack ? "text-amber-300" : "text-emerald-300"} flex items-center gap-1.5 mb-1.5">
+                  <i class="fa-solid ${step.isLoopingBack ? "fa-arrows-spin fa-spin" : "fa-eye"}"></i> 👁️ 系統觀察與反思決策 (Observation &amp; Reflection)
+                </div>
+                <p class="text-slate-100 leading-relaxed font-medium">${escapeHtml(step.observation)}</p>
+              </div>
+              <div class="text-[10px] font-mono ${step.isLoopingBack ? "text-amber-300" : "text-emerald-400"} pt-2 border-t border-slate-800/80">
+                ${step.isLoopingBack ? "🔄 Status: SELF_CORRECTION_LOOP_ACTIVE (退回規劃重試)" : "✅ Status: STAGE_VERIFIED_PROCEED"}
+              </div>
+            </div>
+          </div>
+        `;
+      }
     }
 
     function renderAcademyQuiz() {
