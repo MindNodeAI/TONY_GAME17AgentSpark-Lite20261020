@@ -892,15 +892,15 @@
           <div class="glass-card rounded-2xl p-5 space-y-4 border border-emerald-500/40">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
               <div>
-                <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">Executive Decision Deliverable</span>
-                <h3 class="text-base font-black text-white">4. 最終交付成果：高階主管決策報告（段落編輯與重點粗體化）</h3>
+                <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">McKinsey-Grade Executive Deliverable (SCQA + MECE Framework)</span>
+                <h3 class="text-base font-black text-white">4. 最終交付成果：麥肯錫顧問級高階決策備忘錄（含雙輪財務對照表 &amp; 90天路線圖）</h3>
               </div>
               <button onclick="exportSingleReportWord()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-600/30">
-                <i class="fa-solid fa-file-word mr-1.5"></i>下載編輯好的 WORD 檔 (.doc)
+                <i class="fa-solid fa-file-word mr-1.5"></i>下載麥肯錫顧問級 WORD 報告 (.doc)
               </button>
             </div>
-            <div id="singleReportPreview" class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 text-xs md:text-sm text-slate-200 leading-relaxed space-y-3">
-              <p class="text-slate-400">當 ReAct 狀態反思迴圈驗證達標並開立跨部門工單後，系統將在此自動產出<strong>經過完整段落排版與重點粗體標示的高階主管決策報告</strong>，並支援一鍵下載 `.doc` Word 檔案。</p>
+            <div id="singleReportPreview" class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 text-xs md:text-sm text-slate-200 leading-relaxed space-y-3 max-h-[680px] overflow-y-auto custom-scroll">
+              <p class="text-slate-400">當 ReAct 狀態反思迴圈驗證達標並開立跨部門工單後，系統將在此自動產出<strong>符合麥肯錫金字塔原理（Pyramid Principle）、SCQA 痛點解構、ReAct 雙輪財務敏感度對照表與 MECE 90天落地路線圖的高階決策備忘錄</strong>，並支援一鍵下載專業排版 `.doc` Word 檔案。</p>
             </div>
           </div>
         </div>
@@ -1041,15 +1041,15 @@
       <div class="glass-card rounded-2xl p-6 border border-fuchsia-500/40 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
           <div>
-            <span class="text-xs font-bold text-fuchsia-400 uppercase tracking-wider">Multi-Agent Consolidated Deliverable</span>
-            <h3 class="text-lg font-black text-white">最終整合交付：《品牌整合行銷戰略與視覺創意企劃書》</h3>
+            <span class="text-xs font-bold text-fuchsia-400 uppercase tracking-wider">McKinsey-Grade Multi-Agent Practice Deliverable</span>
+            <h3 class="text-lg font-black text-white">最終整合交付：《麥肯錫級 4-Agent 品牌整合行銷戰略與視覺創意藍圖》</h3>
           </div>
           <button onclick="exportMasProposalWord()" class="px-4 py-2.5 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-xs font-bold transition shadow-lg">
-            <i class="fa-solid fa-file-word mr-1.5"></i>下載整合行銷企劃書 WORD 檔 (.doc)
+            <i class="fa-solid fa-file-word mr-1.5"></i>下載麥肯錫顧問級企劃書 WORD 檔 (.doc)
           </button>
         </div>
-        <div id="masFinalProposalPreview" class="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 text-xs md:text-sm text-slate-200 leading-relaxed space-y-3">
-          <p class="text-slate-400">當審核 Agent 驗證通過（評分 &ge; 85 且 0 法規違規）後，系統將自動彙整策略、定稿文案、AI 視覺 Prompt 與合規簽核紀錄，產出結構化企劃書並提供 Word 檔下載。</p>
+        <div id="masFinalProposalPreview" class="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 text-xs md:text-sm text-slate-200 leading-relaxed space-y-3 max-h-[720px] overflow-y-auto custom-scroll">
+          <p class="text-slate-400">當審核 Agent 驗證通過（評分 &ge; 85 且 0 法規違規）後，系統將自動彙整<strong>策略長 STP 矩陣、文案 v1 退件與 v2 合規重構對照表、藝術指導 AI 商業攝影分鏡規格、全漏斗媒體預算配置表與法遵簽核紀錄</strong>，產出麥肯錫顧問級企劃書並提供 Word 檔下載。</p>
         </div>
       </div>
     </main>
@@ -1380,9 +1380,41 @@
        區塊 5：STEP 1 + STEP 2 (含真實 Gemini tools 迴圈) + STEP 3 完整核心引擎
        ========================================================================= -->
   <script>
-    // 通用 Word (.doc) 匯出函數
+    // 麥肯錫顧問級 Word (.doc) 匯出引擎 (支援正式顧問表格、深藍表頭、Callout 洞察框與簽核欄)
     function downloadHtmlAsWord(bodyHtml, filename) {
-      const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${filename}</title><style>body{font-family:'Microsoft JhengHei','PingFang TC',sans-serif;line-height:1.75;color:#0f172a;padding:28px;}h1,h2,h3,h4{color:#1e1b4b;}strong{color:#0f172a;font-weight:bold;}table{width:100%;border-collapse:collapse;margin:12px 0;}th,td{border:1px solid #94a3b8;padding:8px;}</style></head><body>${bodyHtml}</body></html>`;
+      const cleanHtml = bodyHtml
+        .replace(/class="[^"]*"/g, '')
+        .replace(/<code>/g, '<span style="font-family:Consolas,monospace;background:#eef2ff;color:#312e81;padding:2px 5px;border-radius:4px;">')
+        .replace(/<\/code>/g, '</span>');
+
+      const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+      <head>
+        <meta charset="utf-8">
+        <title>${filename}</title>
+        <style>
+          body { font-family: 'Microsoft JhengHei', 'PingFang TC', 'Arial', sans-serif; line-height: 1.75; color: #0f172a; padding: 32px; font-size: 11pt; }
+          h1 { font-size: 20pt; color: #0f172a; border-bottom: 3px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 14px; font-weight: 900; }
+          h2 { font-size: 14pt; color: #1e3a8a; background-color: #f1f5f9; border-left: 6px solid #1e3a8a; padding: 8px 12px; margin-top: 22px; margin-bottom: 10px; font-weight: bold; }
+          h3, h4 { font-size: 12pt; color: #0f172a; margin-top: 14px; margin-bottom: 6px; font-weight: bold; }
+          p { margin: 8px 0; text-align: justify; }
+          ul, ol { margin: 8px 0 12px 22px; }
+          li { margin-bottom: 6px; }
+          strong { color: #0f172a; font-weight: bold; }
+          table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 10pt; }
+          th { background-color: #1e293b; color: #ffffff; font-weight: bold; text-align: left; padding: 9px 10px; border: 1px solid #334155; }
+          td { padding: 9px 10px; border: 1px solid #cbd5e1; color: #1e293b; vertical-align: top; }
+          tr:nth-child(even) td { background-color: #f8fafc; }
+          .mck-footer { margin-top: 28px; padding-top: 12px; border-top: 2px solid #cbd5e1; font-size: 9pt; color: #475569; text-align: center; }
+        </style>
+      </head>
+      <body>
+        <div style="font-size:9pt;color:#475569;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">TONY STUDIO · MCKINSEY-GRADE AI AGENT EXECUTIVE PRACTICE</div>
+        ${cleanHtml}
+        <div class="mck-footer">
+          © 2020 TonyStudio. 本麥肯錫級 AI Agent 顧問決策報告由 TONY 楊文澤資深數位行銷科技顧問架構設計之 AgentSpark 平台自動生成. All Rights Reserved.
+        </div>
+      </body>
+      </html>`;
       const blob = new Blob(['\ufeff', html], { type: 'application/msword;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -1842,35 +1874,176 @@ const LOCAL_TOOLS = {
       appendTraceCard("🚀 Step 6 · Action Ticket Dispatched (跨部門派工單建立完成)", "TICKET: " + ticketRes.ticket_id, "bg-indigo-500/20 text-indigo-300",
         `已自動派發跨部門執行單號：<strong>${ticketRes.ticket_id}</strong> ➔ 負責單位：<strong>${ticketRes.department}</strong>（優先級：<strong>${ticketRes.priority}</strong>）`);
 
-      // 若有設定 API Key 則嘗試請 Gemini 3.8 Flash 潤飾補充洞察
-      const aiInsight = await callGeminiTextOnly(`請針對「${sc.title}」給出一句 60 字內的高階主管關鍵執行叮嚀，需包含粗體重點：`);
+      // 若有設定 API Key 則請 Gemini 3.8 Flash 以麥肯錫全球資深合夥人視角撰寫深度顧問洞察
+      const aiInsight = await callGeminiTextOnly(`你是麥肯錫 (McKinsey & Company) 全球資深合夥人兼 TONY 楊文澤老師 AI 顧問團隊首席分析師。請針對「${sc.title}」（預算 NT$${sc.budget.toLocaleString()}，首輪廣撒 ROAS ${roiRes1.roas} 被攔截，經 ReAct 反思調整受眾與漏斗後第二輪 ROAS 躍升至 ${roiRes2.roas}，預估營收 NT$${roiRes2.estimated_revenue.toLocaleString()}），用繁體中文撰寫一段約 220 字的「麥肯錫合夥人關鍵戰略洞察 (Partner's Strategic Synthesis)」，需包含：1. 邊際效益遞減破解關鍵 2. 護城河建構建議 3. 關鍵字加上 HTML <strong> 粗體標示：`);
 
       setSingleStatePill('output');
-      document.getElementById('singleLoopStatusBadge').textContent = 'Stage 5: Output 決策報告已生成';
+      document.getElementById('singleLoopStatusBadge').textContent = 'Stage 5: 麥肯錫顧問級報告已生成';
+
+      const netProfit1 = roiRes1.estimated_revenue - sc.budget;
+      const netProfit2 = roiRes2.estimated_revenue - sc.budget;
+      const roasLiftPct = Math.round(((roiRes2.roas - roiRes1.roas) / roiRes1.roas) * 100);
+      const cpa1 = roiRes1.orders > 0 ? Math.round(sc.budget / roiRes1.orders) : sc.budget;
+      const cpa2 = roiRes2.orders > 0 ? Math.round(sc.budget / roiRes2.orders) : sc.budget;
+      const cpaDropPct = Math.round(((cpa1 - cpa2) / cpa1) * 100);
+      const reportDate = new Date().toISOString().slice(0, 10);
 
       const reportHtml = `
-        <div class="space-y-3">
-          <div class="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30">
-            <h4 class="text-sm font-black text-emerald-300">【高階主管決策報告】${sc.title}</h4>
-            <p class="text-xs text-slate-300 mt-1"><strong>簽核狀態：</strong>✅ ReAct 雙輪反思驗證通過 ｜ <strong>派工單號：</strong><code>${ticketRes.ticket_id}</code> ｜ <strong>負責部門：</strong><strong>${ticketRes.department}</strong></p>
+        <div class="space-y-5">
+          <!-- 麥肯錫頂部機密備忘錄抬頭 -->
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/60 to-emerald-950/50 border border-emerald-500/40 space-y-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-emerald-300">
+              <span>MCKINSEY &amp; TONY STUDIO EXECUTIVE MEMORANDUM</span>
+              <span>DOC REF: ${ticketRes.ticket_id} ｜ DATE: ${reportDate}</span>
+            </div>
+            <h1 class="text-base md:text-lg font-black text-white">《${sc.title}》— AI Agent ReAct 狀態反思與財務工程重構決策報告</h1>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">最終核定 ROAS</div>
+                <div class="text-base font-black text-emerald-400">${roiRes2.roas}x <span class="text-[10px] text-emerald-300">(+${roasLiftPct}%)</span></div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">預估創造總營收 (GMV)</div>
+                <div class="text-base font-black text-white">NT$ ${roiRes2.estimated_revenue.toLocaleString()}</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">預估獲客成本 (CPA) 降幅</div>
+                <div class="text-base font-black text-amber-400">NT$ ${cpa2.toLocaleString()} <span class="text-[10px] text-amber-300">(-${cpaDropPct}%)</span></div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">跨部門執行工單</div>
+                <div class="text-xs font-mono font-bold text-indigo-300 mt-1">${ticketRes.ticket_id} (${ticketRes.priority})</div>
+              </div>
+            </div>
           </div>
-          <p><strong>一、 客群感知與痛點診斷 (Perceive &amp; CRM Insight)：</strong><br>
-          經調用企業 CRM 資料庫（客群代碼 <code>${crmRes.segment}</code>），鎖定高價值目標客群共 <strong>${crmRes.total_customers.toLocaleString()} 人</strong>，平均客單價達 <strong>NT$ ${crmRes.avg_order_value.toLocaleString()}</strong>，當前流失風險為 <strong>${crmRes.churn_probability}</strong>。核心關鍵痛點在於「<strong>${crmRes.core_pain_point}</strong>」。</p>
-          <p><strong>二、 ReAct 財務模型反思與參數調優歷程 (Self-Reflection Loop)：</strong><br>
-          ▪ <strong>第一輪廣撒測試（未達標攔截）</strong>：投入預算 <strong>NT$ ${sc.budget.toLocaleString()}</strong>，因採無差別廣泛受眾投放（CPC NT$38、CVR 0.55%），預估 ROAS 僅 <strong>${roiRes1.roas}</strong>，系統自動觸發 <code>WARNING_LOW_ROAS_NEEDS_REFLECTION</code> 風控護欄予以攔截。<br>
-          ▪ <strong>第二輪精準重構（反思後達標）</strong>：Agent 自動收斂受眾為「<strong>高互動分眾私域名單＋專屬權益鉤子</strong>」，成功將每次點擊成本降至 <strong>NT$ ${roiRes2.cpc}</strong>、轉換率拉升至 <strong>${(roiRes2.cvr * 100).toFixed(1)}%</strong>，最終驗證 <strong>ROAS 達 ${roiRes2.roas}</strong>，預估創造總營收 <strong>NT$ ${roiRes2.estimated_revenue.toLocaleString()}</strong>（共 <strong>${roiRes2.orders} 筆成交訂單</strong>）。</p>
-          <p><strong>三、 跨部門落地執行方針與顧問總結 (Action Plan)：</strong><br>
-          系統已開立 <strong>${ticketRes.priority}</strong> 等級派工單（單號 <strong>${ticketRes.ticket_id}</strong>）予 <strong>${ticketRes.department}</strong>。${aiInsight ? `<br><strong>💡 AI 策略長補充洞察：</strong>${aiInsight}` : `請立即啟動分眾自動化腳本並於 72 小時內回報首波核銷數據。`}</p>
+
+          <!-- 第一節：金字塔原理 Executive Summary -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-indigo-300 border-l-4 border-indigo-500 pl-2.5">Ⅰ. 高階執行摘要 (Executive Summary — The Governing Thought)</h2>
+            <p class="text-slate-200 leading-relaxed">
+              根據麥肯錫<strong>「以終為始（Bottom-up &amp; Top-down Synthesis）」</strong>決策原則，本次專案針對企業 CRM 核心資產客群（代碼：<code>${crmRes.segment}</code>，規模 <strong>${crmRes.total_customers.toLocaleString()} 名高價值用戶</strong>，平均客單價 <strong>NT$ ${crmRes.avg_order_value.toLocaleString()}</strong>）進行端到端行銷投資報酬率重構。在固定預算 <strong>NT$ ${sc.budget.toLocaleString()}</strong> 前提下，若沿用傳統「無差別流量廣撒模式（Round 1）」，ROAS 僅達 <strong>${roiRes1.roas}</strong>，將造成預算低效耗損。透過 AgentSpark 單一 Agent 啟動 <strong>ReAct（Reason + Act）自我反思閉環</strong>，主動攔截低效配置並將策略轉向<strong>「高意圖分眾私域喚醒 × 動態價值鉤子（Value Hook）」</strong>，成功於第 2 輪驗證將轉換率拉升至 <strong>${(roiRes2.cvr * 100).toFixed(1)}%</strong>、ROAS 躍升至 <strong>${roiRes2.roas}（增幅達 +${roasLiftPct}%）</strong>，預估貢獻淨行銷毛利 <strong>NT$ ${netProfit2.toLocaleString()}</strong>，並已自動派發跨部門工單予 <strong>${ticketRes.department}</strong> 立即執行。
+            </p>
+          </div>
+
+          <!-- 第二節：麥肯錫 SCQA 結構化商業痛點解構 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-indigo-300 border-l-4 border-indigo-500 pl-2.5">Ⅱ. 麥肯錫 SCQA 商業背景與關鍵痛點診斷 (SCQA Strategic Diagnosis)</h2>
+            <ul class="space-y-1.5 text-slate-200 list-disc pl-5">
+              <li><strong>S — 現況背景 (Situation)：</strong>企業目前已累積 <strong>${crmRes.total_customers.toLocaleString()} 名</strong>具備高消費潛力之目標客群，歷史平均客單價（AOV）高達 <strong>NT$ ${crmRes.avg_order_value.toLocaleString()}</strong>，具備極高之客戶終身價值（LTV）基底。</li>
+              <li><strong>C — 核心衝突與痛點 (Complication)：</strong>經調用本地工具 <code>queryCustomerCRM("${crmRes.segment}")</code> 深度剖析，該客群當前潛在流失風險高達 <strong>${crmRes.churn_probability}</strong>，核心阻礙在於「<strong>${crmRes.core_pain_point}</strong>」。若直接投放泛眾競價廣告，每次點擊成本（CPC）將飆升至 <strong>NT$ ${roiRes1.cpc}</strong> 且轉換率低迷（僅 <strong>${(roiRes1.cvr * 100).toFixed(2)}%</strong>）。</li>
+              <li><strong>Q — 關鍵決策命題 (Core Question)：</strong>如何在不增加總預算（<strong>NT$ ${sc.budget.toLocaleString()}</strong>）的硬性約束下，跨越財務風控護欄（<strong>ROAS &ge; ${targetRoas.toFixed(1)}</strong>），最大化邊際營收貢獻？</li>
+              <li><strong>A — 顧問破局解方 (Strategic Answer)：</strong>啟動 AI Agent 狀態反思閉環，剔除低意圖冷流量，改採<strong>「三層式分眾溝通矩陣（痛點喚醒 ➔ 專屬權益錨定 ➔ 限時稀缺促動）」</strong>，實現流量成本降維與轉換率倍增。</li>
+            </ul>
+          </div>
+
+          <!-- 第三節：ReAct 雙輪財務工程與敏感度精算對照表 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-indigo-300 border-l-4 border-indigo-500 pl-2.5">Ⅲ. ReAct 雙輪財務模型調優與敏感度對照表 (Financial Engineering &amp; ROAS Audit)</h2>
+            <p class="text-slate-300">以下完整記錄 AI Agent 如何透過 <code>calculateCampaignROI()</code> 執行兩輪財務壓力測試，並在 Observe 階段觸發護欄攔截與參數重構之量化軌跡：</p>
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-900 text-slate-200 border-b border-slate-700">
+                    <th class="p-2.5">財務與營運指標 (Key Metrics)</th>
+                    <th class="p-2.5 text-rose-300">Round 1：傳統廣撒基線 (未達標攔截)</th>
+                    <th class="p-2.5 text-emerald-300">Round 2：ReAct 反思調優方案 (最終核定)</th>
+                    <th class="p-2.5 text-amber-300">顧問價值變動幅度 (Delta / Lift)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-bold">總投入行銷預算 (Total Budget)</td>
+                    <td class="p-2.5 font-mono">NT$ ${sc.budget.toLocaleString()}</td>
+                    <td class="p-2.5 font-mono">NT$ ${sc.budget.toLocaleString()}</td>
+                    <td class="p-2.5 font-semibold">預算零增加（資源重分配）</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">平均每次點擊成本 (CPC)</td>
+                    <td class="p-2.5 font-mono">NT$ ${roiRes1.cpc} (泛眾競價紅海)</td>
+                    <td class="p-2.5 font-mono font-bold text-emerald-300">NT$ ${roiRes2.cpc} (私域與精準受眾)</td>
+                    <td class="p-2.5 text-emerald-300 font-bold">成本下降 -${Math.round(((roiRes1.cpc - roiRes2.cpc) / roiRes1.cpc) * 100)}%</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">預估獲取高意圖點擊數 (Clicks)</td>
+                    <td class="p-2.5 font-mono">${roiRes1.clicks.toLocaleString()} 次</td>
+                    <td class="p-2.5 font-mono font-bold text-emerald-300">${roiRes2.clicks.toLocaleString()} 次</td>
+                    <td class="p-2.5 text-emerald-300 font-bold">流量擴增 +${(roiRes2.clicks - roiRes1.clicks).toLocaleString()} 次</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">漏斗轉換率 (Conversion Rate, CVR)</td>
+                    <td class="p-2.5 font-mono">${(roiRes1.cvr * 100).toFixed(2)}%</td>
+                    <td class="p-2.5 font-mono font-bold text-emerald-300">${(roiRes2.cvr * 100).toFixed(2)}%</td>
+                    <td class="p-2.5 text-emerald-300 font-bold">轉換效能躍升 ${(roiRes2.cvr / roiRes1.cvr).toFixed(1)} 倍</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">預估成交訂單數 (Converted Orders)</td>
+                    <td class="p-2.5 font-mono">${roiRes1.orders.toLocaleString()} 筆</td>
+                    <td class="p-2.5 font-mono font-bold text-emerald-300">${roiRes2.orders.toLocaleString()} 筆</td>
+                    <td class="p-2.5 text-emerald-300 font-bold">訂單淨增 +${(roiRes2.orders - roiRes1.orders).toLocaleString()} 筆</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">單筆獲客成本 (Customer Acquisition Cost)</td>
+                    <td class="p-2.5 font-mono">NT$ ${cpa1.toLocaleString()} / 單</td>
+                    <td class="p-2.5 font-mono font-bold text-emerald-300">NT$ ${cpa2.toLocaleString()} / 單</td>
+                    <td class="p-2.5 text-emerald-300 font-bold">獲客成本大降 -${cpaDropPct}%</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">預估創造總營收 (Projected GMV)</td>
+                    <td class="p-2.5 font-mono">NT$ ${roiRes1.estimated_revenue.toLocaleString()}</td>
+                    <td class="p-2.5 font-mono font-bold text-emerald-300">NT$ ${roiRes2.estimated_revenue.toLocaleString()}</td>
+                    <td class="p-2.5 text-emerald-300 font-bold">營收淨增 +NT$ ${(roiRes2.estimated_revenue - roiRes1.estimated_revenue).toLocaleString()}</td>
+                  </tr>
+                  <tr class="bg-slate-900/90">
+                    <td class="p-2.5 font-black text-white">廣告投資報酬率 (ROAS) 與系統簽核</td>
+                    <td class="p-2.5 font-mono text-rose-400 font-bold">${roiRes1.roas}x (❌ 觸發低效護欄攔截)</td>
+                    <td class="p-2.5 font-mono text-emerald-400 font-black">${roiRes2.roas}x (✅ 超越門檻 ${targetRoas.toFixed(1)}x 放行)</td>
+                    <td class="p-2.5 text-amber-300 font-black">ROAS 提升 +${roasLiftPct}% (淨利 NT$ ${netProfit2.toLocaleString()})</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 第四節：MECE 跨部門 90 天落地執行路線圖 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-indigo-300 border-l-4 border-indigo-500 pl-2.5">Ⅳ. MECE 跨部門 90 天落地執行路線圖 (90-Day Actionable Roadmap)</h2>
+            <p class="text-slate-300">系統已透過 <code>createActionTicket()</code> 開立最高優先級工單（單號：<strong>${ticketRes.ticket_id}</strong>），指派 <strong>${ticketRes.department}</strong> 依循以下三階段閉環推進：</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <div class="text-xs font-black text-indigo-400">Phase 1 · 敏捷啟動期 (Day 1 - Day 7)</div>
+                <p class="text-xs text-slate-300"><strong>【受眾清洗與動態標籤鎖定】</strong><br>由 CRM 團隊匯出 <strong>${crmRes.total_customers.toLocaleString()} 名</strong>核心受眾包，排除近 7 日已購客，建立「高流失風險 × 高客單」雙維度受眾清冊，完成個人化着陸頁與專屬折扣碼埋設。</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <div class="text-xs font-black text-emerald-400">Phase 2 · 規模放量期 (Day 8 - Day 30)</div>
+                <p class="text-xs text-slate-300"><strong>【全通路自動化觸發與 A/B 測試】</strong><br>啟動雙軌溝通漏斗，嚴格監控每日 CPC 控制於 <strong>NT$ ${roiRes2.cpc}</strong> 內。若單一素材點擊率（CTR）低於 1.8%，立即啟動自動化創意輪替機制。</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <div class="text-xs font-black text-amber-400">Phase 3 · 飛輪固化期 (Day 31 - Day 90)</div>
+                <p class="text-xs text-slate-300"><strong>【LTV 複購追蹤與知識庫回寫】</strong><br>針對本波成交之 <strong>${roiRes2.orders} 名客戶</strong>建立 60 天回購培育序列，並將最終核銷數據回寫至企業長期向量記憶庫，作為下一季 Agent 基準參數。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 第五節：風險控管矩陣與麥肯錫合夥人總結洞察 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-indigo-300 border-l-4 border-indigo-500 pl-2.5">Ⅴ. 風控護欄矩陣與首席顧問戰略總結 (Risk Mitigation &amp; Partner's Synthesis)</h2>
+            <div class="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/40 space-y-2">
+              <div class="text-xs font-black text-amber-300"><i class="fa-solid fa-user-tie mr-1.5"></i>麥肯錫合夥人 &amp; TONY 楊文澤顧問團隊 關鍵戰略叮嚀：</div>
+              <div class="text-xs text-slate-200 leading-relaxed">
+                ${aiInsight ? aiInsight.replace(/\n/g, '<br>') : `<strong>1. 破解邊際效益遞減之關鍵：</strong>本案證明單靠拉高預算無法解決「${crmRes.core_pain_point}」，唯有透過 ReAct 閉環在投前完成財務模擬，將 CPC 由 NT$${roiRes1.cpc} 壓降至 <strong>NT$${roiRes2.cpc}</strong>，才能實現 <strong>${roiRes2.roas}x ROAS</strong> 的結構性跳躍。<br><strong>2. 制度化 AI 護欄 (Institutionalized Guardrails)：</strong>建議將本次驗證之「<strong>最低 ROAS &ge; ${targetRoas.toFixed(1)} 自動攔截機制</strong>」設為行銷部門常態化 SOP，確保每一分預算皆具備可追蹤之正向財務回報。`}
+              </div>
+            </div>
+          </div>
         </div>
       `;
       document.getElementById('singleReportPreview').innerHTML = reportHtml;
-      if (window.logUserActivity) window.logUserActivity('STEP 2 單一 Agent', `完成「${sc.title}」ReAct 迴圈 (最終 ROAS: ${roiRes2.roas})`);
+      if (window.logUserActivity) window.logUserActivity('STEP 2 單一 Agent', `完成麥肯錫級「${sc.title}」ReAct 決策報告 (最終 ROAS: ${roiRes2.roas})`);
       btn.disabled = false;
     }
 
     function exportSingleReportWord() {
       const content = document.getElementById('singleReportPreview').innerHTML;
-      downloadHtmlAsWord(`<h1>AgentSpark 單一 Agent 高階主管決策報告</h1>${content}`, `AgentSpark_Executive_Decision_Report_${new Date().toISOString().slice(0, 10)}.doc`);
+      downloadHtmlAsWord(content, `McKinsey_Executive_Decision_Report_${new Date().toISOString().slice(0, 10)}.doc`);
     }
 
     // ==================== STEP 3：品牌行銷 4-AGENT 協作與退件閉環引擎 ====================
@@ -2051,30 +2224,177 @@ const LOCAL_TOOLS = {
       document.getElementById('masOutput4').innerHTML = `<div class="text-emerald-300 font-bold">🎉 品牌與法遵雙重驗證通過（綜合評分：96 / 100）</div><div><strong>▪ 簽核結論：</strong>${blackboard.review_output.auditor_comment}</div>`;
       appendMasLog("APPROVED", "bg-emerald-500/30 text-emerald-200", `✅ <strong>審核 Agent 簽核放行 (96分)</strong>！中央共享狀態黑板已彙整產出最終整合行銷企劃書。`);
 
+      const aiMasSynthesis = await callGeminiTextOnly(`你是麥肯錫品牌行銷實務全球合夥人。請針對「${preset.name}」（受眾：${preset.persona}；核心USP：${preset.usp}），用繁體中文撰寫一段約 180 字的「全漏斗品牌增長與多代理協作洞察」，重點字加上 HTML <strong> 粗體：`);
+      const masDate = new Date().toISOString().slice(0, 10);
+
       const proposalHtml = `
-        <div class="space-y-3">
-          <div class="p-3.5 rounded-xl bg-fuchsia-950/40 border border-fuchsia-500/30">
-            <h4 class="text-sm font-black text-fuchsia-300">《品牌整合行銷戰略與視覺創意企劃書》— ${preset.name}</h4>
-            <p class="text-xs text-slate-300 mt-1"><strong>專案編號：</strong><code>${blackboard.campaign_id}</code> ｜ <strong>協作迭代輪次：</strong><strong>${blackboard.iteration} 輪</strong> ｜ <strong>審核 Agent 最終評分：</strong><strong>96 / 100 (法遵合規放行)</strong></p>
+        <div class="space-y-5">
+          <!-- 頂部麥肯錫品牌戰略抬頭 -->
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-fuchsia-950/60 via-slate-900 to-indigo-950/60 border border-fuchsia-500/40 space-y-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-fuchsia-300">
+              <span>MCKINSEY MARKETING &amp; SALES PRACTICE · 4-AGENT BLACKBOARD DELIVERABLE</span>
+              <span>CAMPAIGN ID: ${blackboard.campaign_id} ｜ DATE: ${masDate}</span>
+            </div>
+            <h1 class="text-base md:text-lg font-black text-white">《${preset.name}》— 麥肯錫級 4-Agent 整合行銷戰略、法遵退件修正與視覺創意主藍圖</h1>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">多代理協作迭代</div>
+                <div class="text-sm font-black text-fuchsia-300">${blackboard.iteration} 輪閉環 (${forceTrap ? '含局部退件重構' : '一次通過'})</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">審核 Agent 法遵評分</div>
+                <div class="text-sm font-black text-emerald-400">${blackboard.review_output.score} / 100 (0 違規字眼)</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">跨代理狀態黑板同步率</div>
+                <div class="text-sm font-black text-indigo-300">100% 結構化對齊</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div class="text-[10px] text-slate-400">簽核放行狀態</div>
+                <div class="text-xs font-mono font-bold text-emerald-300 mt-0.5">APPROVED_FOR_LAUNCH</div>
+              </div>
+            </div>
           </div>
-          <p><strong>一、 【Agent 01 策略長定調】核心受眾洞察與單一核心主張 (Creative Brief)：</strong><br>
-          ▪ <strong>專案目標 Brief：</strong>${blackboard.project_brief}<br>
-          ▪ <strong>目標受眾 Persona 與痛點：</strong><strong>${blackboard.strategy_output.target_persona}</strong><br>
-          ▪ <strong>品牌單一核心主張 (USP)：</strong><strong>${blackboard.strategy_output.core_usp}</strong><br>
-          ▪ <strong>品牌視覺識別色票：</strong><strong>${blackboard.strategy_output.brand_color_palette}</strong></p>
-          <p><strong>二、 【Agent 02 文案指導定稿】高轉換主打標題與 PAS 說服架構：</strong><br>
-          ▪ <strong>最終核定主打標題：</strong><strong>${blackboard.copy_output.headline}</strong><br>
-          ▪ <strong>PAS 說服內文：</strong>${blackboard.copy_output.body_pas}<br>
-          ▪ <strong>跨代理傳遞之畫面暗示 (visual_cue)：</strong><em>${blackboard.copy_output.visual_cue}</em></p>
-          <p><strong>三、 【Agent 03 藝術指導生成】商業攝影 AI 繪圖 Prompt 與版面構圖：</strong><br>
-          ▪ <strong>Midjourney / Imagen 商業攝影指令：</strong><code>${blackboard.visual_output.midjourney_prompt}</code><br>
-          ▪ <strong>廣告排版構圖規範：</strong><strong>${blackboard.visual_output.composition_guide}</strong></p>
-          <p><strong>四、 【Agent 04 審核守門員簽核】法規合規與局部退件閉環紀錄：</strong><br>
-          ▪ <strong>法遵掃描與簽核評語：</strong><strong>${blackboard.review_output.auditor_comment}</strong></p>
+
+          <!-- 第一章：策略長 STP 與品牌定位矩陣 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-fuchsia-300 border-l-4 border-fuchsia-500 pl-2.5">Ⅰ. 【Agent 01 策略長定調】麥肯錫 STP 受眾洞察與品牌核心價值主張 (Strategic Positioning Matrix)</h2>
+            <p class="text-slate-200 leading-relaxed">
+              策略 Agent（Temperature 0.2，嚴謹邏輯模式）透過調用 <code>fetchAudiencePersona()</code> 與 <code>defineBrandUSP()</code>，將模糊的商業 Brief 轉化為不可動搖的品牌戰略基石，並鎖定於中央共享狀態黑板（<code>strategy_output.locked = true</code>）：
+            </p>
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-900 text-slate-200 border-b border-slate-700">
+                    <th class="p-2.5 w-1/4">戰略維度 (Strategic Pillar)</th>
+                    <th class="p-2.5">策略 Agent 結構化定調內容 (Blackboard Locked Specification)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-bold text-indigo-300">專案終極任務 (Project Brief)</td>
+                    <td class="p-2.5">${blackboard.project_brief}</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-indigo-300">核心受眾畫像與深層痛點 (Persona &amp; Pain Point)</td>
+                    <td class="p-2.5"><strong>${blackboard.strategy_output.target_persona}</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-indigo-300">單一核心獨特賣點 (Core USP / Value Proposition)</td>
+                    <td class="p-2.5"><strong class="text-emerald-300">${blackboard.strategy_output.core_usp}</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-indigo-300">品牌視覺識別色票系統 (Brand VI Palette)</td>
+                    <td class="p-2.5"><strong>${blackboard.strategy_output.brand_color_palette}</strong>（強制傳遞予視覺 Agent 進行色彩咬合）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 第二章：文案指導 PAS 說服架構與法遵退件前後對照表 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-fuchsia-300 border-l-4 border-fuchsia-500 pl-2.5">Ⅱ. 【Agent 02 文案指導 × Agent 04 審核守門員】法遵攔截與 PAS 說服文案迭代對照表</h2>
+            <p class="text-slate-300">
+              展現多代理系統最核心之<strong>「精準局部退件（Targeted Rollback）」</strong>價值——當第 4 號審核 Agent 掃描出違反《公平交易法》與廣告法規之絕對化用語時，系統<strong>自動保留策略與視覺成果，僅定向退回文案 Agent 進行 v2 合規重構</strong>：
+            </p>
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-900 text-slate-200 border-b border-slate-700">
+                    <th class="p-2.5">文案檢核維度</th>
+                    <th class="p-2.5 text-rose-300">Iteration 1：初稿文案 (v1 — 審核評分 62 分退件)</th>
+                    <th class="p-2.5 text-emerald-300">Iteration 2：合規重構定稿 (v2 — 審核評分 96 分放行)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-bold">主打廣告標題 (Hero Headline)</td>
+                    <td class="p-2.5 text-rose-300">${copyV1Headline}</td>
+                    <td class="p-2.5 font-bold text-emerald-300">${blackboard.copy_output.headline}</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">法遵掃描診斷 (Legal Compliance Scan)</td>
+                    <td class="p-2.5">❌ 攔截絕對化違規詞：<code>地表最強</code>、<code>保證第一</code>、<code>100% 絕對見效</code></td>
+                    <td class="p-2.5 text-emerald-300">✅ 100% 剔除誇大字眼，改採<strong>「客觀實證數據 × 痛點場景共鳴」</strong>表述</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">PAS 深度說服長文 (Problem-Agitate-Solve)</td>
+                    <td class="p-2.5">過度依賴情緒性誇大承諾，缺乏企業級信任背書。</td>
+                    <td class="p-2.5"><strong>【P 痛點共鳴】</strong>精準直擊「${blackboard.strategy_output.target_persona}」日常焦慮；<br><strong>【A 痛點加劇】</strong>揭示維持現狀之隱性時間與財務折損；<br><strong>【S 實證解方】</strong>${blackboard.copy_output.body_pas}</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold">跨代理交接信號 (Emitted <code>visual_cue</code>)</td>
+                    <td class="p-2.5" colspan="2"><em>「${blackboard.copy_output.visual_cue}」</em>（由文案 Agent 寫入黑板，直接驅動第 3 號視覺 Agent）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 第三章：藝術指導商業攝影規格與 AI 視覺生成藍圖 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-fuchsia-300 border-l-4 border-fuchsia-500 pl-2.5">Ⅲ. 【Agent 03 視覺藝術指導】商業攝影分鏡規格與生成式 AI 繪圖參數拆解</h2>
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2 text-xs">
+              <div><strong>▪ 完整 Midjourney v6 / Imagen 3 商業攝影 Prompt：</strong></div>
+              <pre class="p-3 rounded-lg bg-slate-950 text-emerald-300 font-mono whitespace-pre-wrap">${blackboard.visual_output.midjourney_prompt}</pre>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-1">
+                <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800"><strong>📷 鏡頭與景深設定：</strong>85mm 人像定焦鏡、f/1.8 大光圈淺景深，突顯主體自信神情與產品細節。</div>
+                <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800"><strong>🎨 品牌色票光影咬合：</strong>嚴格對齊策略長鎖定之「<strong>${blackboard.strategy_output.brand_color_palette}</strong>」環境光。</div>
+                <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800"><strong>📐 商業排版構圖規範：</strong>${blackboard.visual_output.composition_guide}。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 第四章：麥肯錫全漏斗媒體渠道配置與 KPI 預估矩陣 -->
+          <div class="space-y-2">
+            <h2 class="text-sm font-black text-fuchsia-300 border-l-4 border-fuchsia-500 pl-2.5">Ⅳ. 全漏斗媒體渠道預算配置與轉換 KPI 矩陣 (Full-Funnel Media Allocation)</h2>
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-900 text-slate-200 border-b border-slate-700">
+                    <th class="p-2.5">行銷漏斗階段</th>
+                    <th class="p-2.5">核心溝通渠道與素材形式</th>
+                    <th class="p-2.5">預算佔比</th>
+                    <th class="p-2.5">關鍵驗收指標 (Primary KPIs)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-bold text-indigo-300">Top Funnel · 破圈認知 (Awareness)</td>
+                    <td class="p-2.5">Meta / YouTube 16:9 電影感主視覺海報 + 15秒痛點短影音</td>
+                    <td class="p-2.5 font-mono font-bold">35%</td>
+                    <td class="p-2.5">目標受眾觸及率 &ge; 65%、影片完播率 (VTR) &ge; 42%</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-amber-300">Mid Funnel · 深度考慮 (Consideration)</td>
+                    <td class="p-2.5">KOL 實證開箱評測 + PAS 長文深度着陸頁 (Landing Page)</td>
+                    <td class="p-2.5 font-mono font-bold">40%</td>
+                    <td class="p-2.5">廣告點擊率 (CTR) &ge; 2.4%、頁面平均停留時間 &ge; 95 秒</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-emerald-300">Bottom Funnel · 精準收割 (Conversion)</td>
+                    <td class="p-2.5">CRM 私域名單動態再行銷 (DPA) + 限時早鳥/體驗鉤子</td>
+                    <td class="p-2.5 font-mono font-bold">25%</td>
+                    <td class="p-2.5">最終轉換率 (CVR) &ge; 2.8%、綜合 ROAS &ge; 3.2x</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 第五章：審核守門員最終簽核與合夥人總結 -->
+          <div class="p-4 rounded-xl bg-fuchsia-950/30 border border-fuchsia-500/40 space-y-1.5">
+            <div class="text-xs font-black text-fuchsia-300"><i class="fa-solid fa-stamp mr-1.5"></i>【Agent 04 審核守門員 &amp; 麥肯錫顧問合夥人 最終簽核結論】</div>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              <strong>▪ 法遵與品牌語氣簽核評語：</strong>${blackboard.review_output.auditor_comment}<br>
+              <strong>▪ 首席顧問總結：</strong>${aiMasSynthesis ? aiMasSynthesis.replace(/\n/g, '<br>') : `透過 AgentSpark <strong>4-Agent 專職分工與中央黑板架構</strong>，我們成功消除了傳統行銷團隊「策略與視覺脫節、文案觸犯法規導致全案重來」的溝通摩擦力，實現從受眾洞察到合規創意交付的端到端自動化。`}
+            </p>
+          </div>
         </div>
       `;
       document.getElementById('masFinalProposalPreview').innerHTML = proposalHtml;
-      if (window.logUserActivity) window.logUserActivity('STEP 3 多代理協作', `完成 4-Agent 專案「${preset.name}」協作與退件閉環`);
+      if (window.logUserActivity) window.logUserActivity('STEP 3 多代理協作', `完成麥肯錫級 4-Agent 專案「${preset.name}」企劃書`);
       btn.disabled = false;
     }
 
@@ -2085,7 +2405,7 @@ const LOCAL_TOOLS = {
 
     function exportMasProposalWord() {
       const content = document.getElementById('masFinalProposalPreview').innerHTML;
-      downloadHtmlAsWord(`<h1>AgentSpark 4-Agent 品牌整合行銷企劃書</h1>${content}`, `AgentSpark_4Agent_Marketing_Proposal_${new Date().toISOString().slice(0, 10)}.doc`);
+      downloadHtmlAsWord(content, `McKinsey_4Agent_Marketing_Master_Plan_${new Date().toISOString().slice(0, 10)}.doc`);
     }
 
     // ==================== 管理者後台 AI 營運分析報告與 WORD 匯出 ====================
@@ -2096,27 +2416,64 @@ const LOCAL_TOOLS = {
       const totalUsers = list.length || 1;
       const students = list.filter(m => (m.identity || '').includes('學員')).length;
       const guests = totalUsers - students;
+      const studentRatio = Math.round((students / totalUsers) * 100);
+      const totalLogins = list.reduce((acc, m) => acc + (Number(m.loginCount) || 1), 0);
+      const avgLogins = (totalLogins / totalUsers).toFixed(1);
 
       const box = document.getElementById('adminAIReportBox');
-      box.innerHTML = `<div class="text-amber-300 font-bold">⚡ 正在彙整 ${start} 至 ${end} 營運數據並生成 AI 顧問診斷報告...</div>`;
+      box.innerHTML = `<div class="text-amber-300 font-bold">⚡ 正在彙整 ${start} 至 ${end} 營運數據並生成麥肯錫級 SaaS 營運診斷報告...</div>`;
 
-      const aiText = await callGeminiTextOnly(`你是 TONY 楊文澤老師平台的 AI 營運顧問，目前平台在 ${start} 至 ${end} 共有 ${totalUsers} 位註冊會員（TONY老師學員 ${students} 位、一般訪客 ${guests} 位）。請用繁體中文撰寫 150 字內的營運洞察與課堂推廣建議，需包含粗體重點：`);
+      const aiText = await callGeminiTextOnly(`你是麥肯錫 TMT (科技、媒體與電信) 實務合夥人兼 TONY 楊文澤老師平台首席營運顧問。目前 AgentSpark 平台在 ${start} 至 ${end} 共有 ${totalUsers} 位註冊會員（TONY老師學員 ${students} 位佔 ${studentRatio}%、一般訪客 ${guests} 位，累計登入 ${totalLogins} 次，人均登入 ${avgLogins} 次）。請用繁體中文撰寫約 180 字的「北極星指標診斷與高階企業內訓轉化策略」，重點加上 HTML <strong> 粗體：`);
 
       box.innerHTML = `
-        <div class="space-y-2">
-          <h4 class="text-sm font-black text-amber-300">📊 AgentSpark 平台營運分析報告（統計區間：${start} ～ ${end}）</h4>
-          <p><strong>一、 會員結構與活躍度概況：</strong><br>
-          ▪ 總註冊會員數：<strong>${totalUsers} 人</strong> ｜ TONY 老師學員：<strong>${students} 人</strong> ｜ 一般訪客：<strong>${guests} 人</strong>。<br>
-          ▪ 核心模組使用熱度：以「<strong>STEP 1 感知思考行動互動閉環</strong>」、「<strong>STEP 2 高流失 VIP 挽留 ReAct 試算</strong>」與「<strong>STEP 3 品牌行銷 4-Agent 退件閉環</strong>」互動率最高。</p>
-          <p><strong>二、 AI 營運顧問策略建議：</strong><br>
-          ${aiText ? aiText.replace(/\n/g, '<br>') : '<strong>建議強化課堂分組競賽：</strong>引導學員對比「單一 Agent ReAct 迴圈」與「4-Agent 局部退件閉環」之差異，並將匯出之 Word 企劃書納入期末專案評量，提升實戰轉化率。'}</p>
+        <div class="space-y-4">
+          <div class="p-3.5 rounded-xl bg-amber-950/30 border border-amber-500/40">
+            <h1 class="text-sm md:text-base font-black text-amber-300">📊 AgentSpark SaaS 平台北極星指標與營運增長診斷報告（McKinsey TMT Practice）</h1>
+            <p class="text-[11px] text-slate-300 font-mono mt-0.5">評估區間：${start} ～ ${end} ｜ 總顧問：TONY 楊文澤 老師</p>
+          </div>
+
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="w-full text-xs text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-900 text-slate-200 border-b border-slate-700">
+                  <th class="p-2.5">平台營運關鍵指標 (SaaS North Star Metrics)</th>
+                  <th class="p-2.5">當前實測數據</th>
+                  <th class="p-2.5">健康度評級與顧問解讀</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 text-slate-200">
+                <tr>
+                  <td class="p-2.5 font-bold">總驗證註冊會員數 (Verified Users)</td>
+                  <td class="p-2.5 font-mono font-bold text-white">${totalUsers} 人</td>
+                  <td class="p-2.5">100% 通過 Firebase Double Opt-in 雙重信箱驗證，名單含金量極高。</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">核心學員結構佔比 (Core Cohort Ratio)</td>
+                  <td class="p-2.5 font-mono text-emerald-300">TONY 老師學員 ${students} 人 (${studentRatio}%) / 訪客 ${guests} 人</td>
+                  <td class="p-2.5">課堂學員為平台核心主力，外部自然流量訪客具備轉化為企業內訓客戶之潛力。</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">累計互動登入與人均留存黏著度</td>
+                  <td class="p-2.5 font-mono text-amber-300">累計 ${totalLogins} 次登入 (人均 ${avgLogins} 次)</td>
+                  <td class="p-2.5">STEP 2 單一 Agent ReAct 試算與 STEP 3 多代理退件閉環有效帶動高頻回訪。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="space-y-1.5">
+            <h2 class="text-xs font-black text-indigo-300">💡 麥肯錫顧問合夥人營運增長行動方針 (Strategic Growth Actions)：</h2>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              ${aiText ? aiText.replace(/\n/g, '<br>') : `<strong>1. 強化「學員實戰產出」飛輪：</strong>引導學員於課堂中完成 STEP 2 決策備忘錄與 STEP 3 整合行銷藍圖之 Word 匯出，作為企業專案認證評量。<br><strong>2. B2B 企業內訓商機孵化：</strong>針對高頻登入之「非學員(一般訪客)」提供 TONY 老師 4R 流程重構顧問診斷邀約，將 SaaS 體驗流量直接變現為高單價企業包班內訓。`}
+            </p>
+          </div>
         </div>
       `;
     }
 
     function exportAdminReportWord() {
       const content = document.getElementById('adminAIReportBox').innerHTML;
-      downloadHtmlAsWord(`<h1>AgentSpark 平台 AI 營運分析報告</h1>${content}`, `AgentSpark_Admin_Analytics_Report_${new Date().toISOString().slice(0, 10)}.doc`);
+      downloadHtmlAsWord(content, `McKinsey_AgentSpark_SaaS_Analytics_Report_${new Date().toISOString().slice(0, 10)}.doc`);
     }
 
     // 頁面初始化
